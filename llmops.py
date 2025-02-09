@@ -5,7 +5,6 @@ from rouge_score import rouge_scorer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 from transformers import BartForConditionalGeneration, BartTokenizer, Trainer, TrainingArguments
-import openai
 import hashlib
 import os
 import time  # Add time module for unique ID generation
@@ -13,10 +12,7 @@ import time  # Add time module for unique ID generation
 # Configuration
 DATABASE_NAME = "llm_monitoring.db"
 MODEL_NAME = "facebook/bart-large-cnn"
-openai.api_type = "azure"
-openai.api_key = os.getenv("AZURE_OPENAI_KEY")
-openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
-openai.api_version = "2023-05-15"
+
 
 # %% [markdown]
 # ## 1. Database Setup
@@ -133,7 +129,7 @@ class RetrainingDecider:
 
         Should we retrain? Answer only YES or NO."""
 
-        response = openai.ChatCompletion.create(
+        response = .ChatCompletion.create(
             engine=self.deployment_name,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0
