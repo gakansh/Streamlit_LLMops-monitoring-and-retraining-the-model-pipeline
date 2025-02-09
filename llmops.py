@@ -116,6 +116,17 @@ from datasets import Dataset
 
 # %% [markdown]
 # ## 3. Retraining Decision System
+
+
+def tokenize(batch, tokenizer):
+        return tokenizer(
+        batch["input_text"],
+        text_target=batch["summary"],
+        max_length=1024,
+        truncation=True,
+        padding="max_length"
+    )
+
 class RetrainingDecider:
     def __init__(self):
         self.deployment_name = "gpt-4"  # Azure deployment name
@@ -129,11 +140,7 @@ class RetrainingDecider:
 
         Should we retrain? Answer only YES or NO."""
 
-        response = .ChatCompletion.create(
-            engine=self.deployment_name,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.0
-        )
+       
         
         return "YES" in response.choices[0].message.content.upper()
 
@@ -153,22 +160,24 @@ class RetrainingPipeline:
         ''', self.db.conn)
         return df
     
+    # def tokenize(batch, tokenizer):
+    #     return tokenizer(
+    #     batch["input_text"],
+    #     text_target=batch["summary"],
+    #     max_length=1024,
+    #     truncation=True,
+    #     padding="max_length"
+    # )
+    
     def retrain(self):
         df = self.prepare_data()
         
         # Simple fine-tuning logic
         train_dataset = Dataset.from_pandas(df[['input_text', 'summary']])
         
-        def tokenize(batch):
-            return self.tokenizer(
-                batch["input_text"],
-                text_target=batch["summary"],
-                max_length=1024,
-                truncation=True,
-                padding="max_length"
-            )
         
-        train_dataset = train_dataset.map(tokenize, batched=True)
+        train_dataset = train_dataset.map(lambda batch: tokenize(batch, self.tokenizer), batched=True)
+
         
         training_args = TrainingArguments(
             output_dir="./results",
