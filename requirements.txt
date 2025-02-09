@@ -1,0 +1,22 @@
+# Core Dependencies
+streamlit
+numpy
+pandas
+scikit-learn
+plotly
+sqlite3
+
+# Hugging Face Transformers and Optimization
+transformers
+datasets
+torch
+accelerate
+
+# Text Processing and Evaluation
+rouge-score
+
+# Database Management
+sqlite3
+
+# Web Frameworks (if needed later)
+flask
