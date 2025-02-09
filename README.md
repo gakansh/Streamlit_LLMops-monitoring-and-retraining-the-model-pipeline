@@ -9,7 +9,7 @@
 ✅ **Real-time monitoring** (ROUGE score, user ratings, data drift detection)  
 ✅ **Automatic retraining pipeline** for low-rated summaries  
 ✅ **Database logging** (SQLite-based interaction tracking)  
-✅ **AWS Deployment-ready** with full setup instructions  
+
 
 ---
 
